@@ -1,0 +1,31 @@
+syntax = "proto3";
+package staking.v1;
+option go_package = "github.com/jhionan/multichain-staking/gen/staking/v1;stakingv1";
+
+enum Chain { CHAIN_UNSPECIFIED = 0; CHAIN_EVM = 1; CHAIN_SOLANA = 2; }
+enum Tier { TIER_UNSPECIFIED = 0; TIER_BRONZE = 1; TIER_SILVER = 2; TIER_GOLD = 3; }
+enum PositionStatus { POSITION_STATUS_UNSPECIFIED = 0; POSITION_STATUS_ACTIVE = 1; POSITION_STATUS_UNSTAKED = 2; POSITION_STATUS_PENALTY = 3; }
+
+message TierInfo { Tier tier = 1; uint32 lock_days = 2; uint32 apr_bps = 3; string min_stake = 4; }
+message StakePosition { string id = 1; Chain chain = 2; string wallet = 3; string amount = 4; Tier tier = 5; PositionStatus status = 6; int64 staked_at = 7; int64 lock_until = 8; string accrued_rewards = 9; string tx_hash = 10; }
+message StakeRequest { Chain chain = 1; string wallet = 2; string amount = 3; Tier tier = 4; }
+message StakeResponse { StakePosition position = 1; string tx_hash = 2; }
+message UnstakeRequest { Chain chain = 1; string position_id = 2; }
+message UnstakeResponse { string amount_returned = 1; string rewards = 2; string penalty = 3; string tx_hash = 4; }
+message ClaimRewardsRequest { Chain chain = 1; string position_id = 2; }
+message ClaimRewardsResponse { string rewards_claimed = 1; string tx_hash = 2; }
+message GetPositionRequest { Chain chain = 1; string position_id = 2; }
+message GetPositionResponse { StakePosition position = 1; }
+message ListPositionsRequest { Chain chain = 1; string wallet = 2; }
+message ListPositionsResponse { repeated StakePosition positions = 1; }
+message GetTiersRequest { Chain chain = 1; }
+message GetTiersResponse { repeated TierInfo tiers = 1; }
+
+service StakingService {
+  rpc Stake(StakeRequest) returns (StakeResponse);
+  rpc Unstake(UnstakeRequest) returns (UnstakeResponse);
+  rpc ClaimRewards(ClaimRewardsRequest) returns (ClaimRewardsResponse);
+  rpc GetPosition(GetPositionRequest) returns (GetPositionResponse);
+  rpc ListPositions(ListPositionsRequest) returns (ListPositionsResponse);
+  rpc GetTiers(GetTiersRequest) returns (GetTiersResponse);
+}
