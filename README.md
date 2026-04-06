@@ -312,6 +312,8 @@ Security: `ReentrancyGuard` + `Ownable2Step` + `Pausable` + `SafeERC20` + Checks
 
 PDA-based position tracking, CPI token transfers, event emission for indexer.
 
+**Adapter status:** The Go `SolanaStaker` adapter implements the `ChainStaker` interface with `GetTiers` and `HealthCheck` fully wired. Write operations (Stake, Unstake, ClaimRewards) are scaffolded — the Anchor program is deployed and the adapter pattern is proven via EVM; wiring the Solana RPC calls follows the same mechanical pattern. See [scope tradeoffs ADR](../etherium_poc_docs/03-solana-integration/decisions/scope-tradeoffs.md).
+
 ---
 
 ## Running Tests
