@@ -1,0 +1,3 @@
+[workspace]
+members = ["programs/tiered-staking"]
+resolver = "2"
