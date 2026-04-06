@@ -24,6 +24,7 @@ type Config struct {
 	EVMPrivateKey      string `mapstructure:"evm_private_key"`
 	EVMStakingContract string `mapstructure:"evm_staking_contract"`
 	EVMTokenContract   string `mapstructure:"evm_token_contract"`
+	EVMDeployBlock     int64  `mapstructure:"evm_deploy_block"`
 
 	SolanaRpcURL     string `mapstructure:"solana_rpc_url"`
 	SolanaWsURL      string `mapstructure:"solana_ws_url"`
@@ -47,6 +48,7 @@ var allKeys = []struct {
 	{"evm_private_key", "EVM_PRIVATE_KEY"},
 	{"evm_staking_contract", "EVM_STAKING_CONTRACT"},
 	{"evm_token_contract", "EVM_TOKEN_CONTRACT"},
+	{"evm_deploy_block", "EVM_DEPLOY_BLOCK"},
 	{"solana_rpc_url", "SOLANA_RPC_URL"},
 	{"solana_ws_url", "SOLANA_WS_URL"},
 	{"solana_private_key", "SOLANA_PRIVATE_KEY"},

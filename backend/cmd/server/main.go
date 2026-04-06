@@ -235,7 +235,7 @@ func main() {
 			wsClient,
 		)
 
-		idx := indexer.NewIndexer(evmSource, pgStore, 0)
+		idx := indexer.NewIndexer(evmSource, pgStore, cfg.EVMDeployBlock)
 
 		go func() {
 			log.Info().Str("chain_id", evmChainIDStr).Msg("indexer: starting")
