@@ -89,9 +89,40 @@ func (s *EVMEventSource) LatestBlock(ctx context.Context) (int64, error) {
 	return int64(n), nil
 }
 
-// CatchUp implements EventSource. It performs a single FilterLogs call
-// covering [startBlock, endBlock] and decodes matching events.
+// maxBlockRange is the maximum number of blocks to query in a single FilterLogs
+// call. Public RPC endpoints typically cap this at 50 000.
+const maxBlockRange int64 = 10_000
+
+// CatchUp implements EventSource. It queries logs in chunks of maxBlockRange
+// to respect RPC provider limits.
 func (s *EVMEventSource) CatchUp(ctx context.Context, startBlock, endBlock int64) ([]ChainEvent, error) {
+	var allEvents []ChainEvent
+
+	for from := startBlock; from <= endBlock; from += maxBlockRange + 1 {
+		to := from + maxBlockRange
+		if to > endBlock {
+			to = endBlock
+		}
+
+		chunk, err := s.fetchLogs(ctx, from, to)
+		if err != nil {
+			return nil, err
+		}
+		allEvents = append(allEvents, chunk...)
+	}
+
+	s.logger.Info().
+		Str("chain_id", s.chainID).
+		Int64("start_block", startBlock).
+		Int64("end_block", endBlock).
+		Int("events_found", len(allEvents)).
+		Msg("evm_source: catch-up complete")
+
+	return allEvents, nil
+}
+
+// fetchLogs performs a single FilterLogs call for a block range.
+func (s *EVMEventSource) fetchLogs(ctx context.Context, startBlock, endBlock int64) ([]ChainEvent, error) {
 	query := ethereum.FilterQuery{
 		FromBlock: big.NewInt(startBlock),
 		ToBlock:   big.NewInt(endBlock),
@@ -131,6 +162,17 @@ func (s *EVMEventSource) CatchUp(ctx context.Context, startBlock, endBlock int64
 // live logs emitted by the staking contract and fans them out onto the
 // returned channel. The channel is closed when ctx is cancelled.
 func (s *EVMEventSource) Subscribe(ctx context.Context) (<-chan ChainEvent, error) {
+	if s.wsClient == nil {
+		// No WebSocket client — return a channel that blocks until context is done.
+		ch := make(chan ChainEvent)
+		go func() {
+			<-ctx.Done()
+			close(ch)
+		}()
+		s.logger.Warn().Str("chain_id", s.chainID).Msg("evm_source: no WS client — subscription disabled, catch-up only")
+		return ch, nil
+	}
+
 	query := ethereum.FilterQuery{
 		Addresses: []common.Address{s.contractAddress},
 		Topics:    [][]common.Hash{allTopics},
