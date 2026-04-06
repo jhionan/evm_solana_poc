@@ -67,6 +67,16 @@ deploy-local: ## Deploy EVM contracts to local Anvil node
 		--rpc-url http://localhost:8545 \
 		--broadcast
 
+deploy-pegasus: ## Deploy EVM contracts to LightLink Pegasus testnet
+	cd contracts/evm && PRIVATE_KEY=$(PRIVATE_KEY) forge script script/DeployTestnet.s.sol \
+		--rpc-url https://replicator.pegasus.lightlink.io/rpc/v1 \
+		--broadcast --legacy
+
+deploy-sepolia: ## Deploy EVM contracts to Sepolia testnet
+	cd contracts/evm && PRIVATE_KEY=$(PRIVATE_KEY) forge script script/DeployTestnet.s.sol \
+		--rpc-url $(SEPOLIA_RPC_URL) \
+		--broadcast --verify
+
 test-solana: ## Run Solana program tests with Anchor
 	cd contracts/solana && anchor test
 

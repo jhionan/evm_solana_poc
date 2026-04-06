@@ -53,7 +53,56 @@ A production-grade proof-of-concept demonstrating cross-chain staking across **E
 
 ---
 
-## E2E Test Results
+## Live Testnet Deployment (Sepolia)
+
+Contracts are deployed and verified on **Ethereum Sepolia** (chain ID `11155111`):
+
+| Contract | Address | Explorer |
+|----------|---------|----------|
+| **StakingToken (LLSTK)** | `0xD8315d4a129d6dEb6A54D8C42445911AF3aD8F64` | [View on Etherscan](https://sepolia.etherscan.io/address/0xD8315d4a129d6dEb6A54D8C42445911AF3aD8F64) |
+| **TieredStaking** | `0x1D1Ca3770e7366EA6A5431a6185eD4952F570470` | [View on Etherscan](https://sepolia.etherscan.io/address/0x1D1Ca3770e7366EA6A5431a6185eD4952F570470) |
+| **Deployer** | `0x239f3d3F6FFBC5A01d1109d33BDdE0Bb12325FB7` | [View on Etherscan](https://sepolia.etherscan.io/address/0x239f3d3F6FFBC5A01d1109d33BDdE0Bb12325FB7) |
+
+### Sepolia E2E — Stake Transaction (verified on-chain)
+
+```json
+{
+  "position": {
+    "id": "0",
+    "chain": "CHAIN_EVM",
+    "wallet": "0x239f3d3F6FFBC5A01d1109d33BDdE0Bb12325FB7",
+    "amount": "100000000000000000000",
+    "tier": "TIER_GOLD",
+    "status": "POSITION_STATUS_ACTIVE",
+    "stakedAt": "1775493480",
+    "lockUntil": "1783269480"
+  },
+  "txHash": "0xd4dba2b950f60d807c4174a1f08615320e21281d8791f9f666c0bebcb44d3f57"
+}
+```
+
+Verify: [View tx on Etherscan](https://sepolia.etherscan.io/tx/0xd4dba2b950f60d807c4174a1f08615320e21281d8791f9f666c0bebcb44d3f57)
+
+### How to Reproduce on Sepolia
+
+```bash
+# 1. Get Sepolia ETH from faucet
+#    https://cloud.google.com/application/web3/faucet/ethereum/sepolia
+
+# 2. Deploy contracts
+PRIVATE_KEY=0xYOUR_KEY make deploy-sepolia
+
+# 3. Update .env with contract addresses and run
+EVM_RPC_URL=https://ethereum-sepolia-rpc.publicnode.com \
+EVM_DEPLOY_BLOCK=10603490 \
+EVM_STAKING_CONTRACT=0x1D1Ca3770e7366EA6A5431a6185eD4952F570470 \
+EVM_TOKEN_CONTRACT=0xD8315d4a129d6dEb6A54D8C42445911AF3aD8F64 \
+make build && ./backend/bin/server
+```
+
+---
+
+## E2E Test Results (Local Anvil)
 
 The following is a verified end-to-end test run against a local Anvil chain with real on-chain transactions:
 
