@@ -472,7 +472,7 @@ CREATE TABLE audit_log (
 
 ## 8. Documentation Strategy
 
-All decision docs live at `/Users/rian/focaApp/etherium_poc_docs/` in ADR format:
+All decision docs live in a sibling directory `../etherium_poc_docs/` in ADR format:
 
 ```
 etherium_poc_docs/
