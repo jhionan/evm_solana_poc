@@ -113,5 +113,16 @@ func (s *EVMSigner) SignTx(tx *types.Transaction) (*types.Transaction, error) {
 	return signed, nil
 }
 
+// PrivateKey returns the ECDSA private key stored in the signer.
+// The caller must not modify the returned key.
+func (s *EVMSigner) PrivateKey() *ecdsa.PrivateKey {
+	return s.privKey
+}
+
+// ChainID returns the chain ID the signer was initialised with.
+func (s *EVMSigner) ChainID() *big.Int {
+	return s.chainID
+}
+
 // compile-time interface assertion
 var _ TxSigner = (*EVMSigner)(nil)

@@ -6,14 +6,16 @@ import (
 	"github.com/rs/zerolog"
 )
 
-// NewEVMStakerForTest creates an EVMStaker with a nil ethclient, which is
-// sufficient for any test that does not exercise RPC-dependent methods
-// (HealthCheck, Stake, etc.).  This avoids spinning up a real or mock node
-// just to test in-memory logic like GetTiers and ChainID.
+// NewEVMStakerForTest creates an EVMStaker with nil client, signer, and
+// contract bindings. This is sufficient for tests that exercise in-memory
+// logic (GetTiers, ChainID) and for tests that assert ErrContractNotConnected
+// is returned when no bindings are wired.
 func NewEVMStakerForTest(logger zerolog.Logger) (*EVMStaker, error) {
 	return &EVMStaker{
-		client: nil,
-		signer: nil,
-		logger: logger,
+		client:  nil,
+		signer:  nil,
+		staking: nil,
+		token:   nil,
+		logger:  logger,
 	}, nil
 }
