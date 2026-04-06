@@ -9,7 +9,7 @@ use state::{StakingPool, Tier, UserStake};
 
 // Placeholder program ID — replace with the actual key from `anchor keys list`
 // before deploying to any cluster.
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("zaEDLTCw2b5zGrunQEDKvHuVEEgFoAwjHViMH357QGn");
 
 // ---------------------------------------------------------------------------
 // Constants

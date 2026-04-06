@@ -1,0 +1,16 @@
+[features]
+resolution = true
+skip-lint = false
+
+[programs.devnet]
+tiered_staking = "zaEDLTCw2b5zGrunQEDKvHuVEEgFoAwjHViMH357QGn"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "echo 'no JS tests'"
