@@ -21,12 +21,14 @@ import (
 
 	"github.com/jhionan/multichain-staking/gen/staking/v1/stakingv1connect"
 	"github.com/jhionan/multichain-staking/internal/api"
+	"github.com/jhionan/multichain-staking/internal/audit"
 	"github.com/jhionan/multichain-staking/internal/auth"
 	"github.com/jhionan/multichain-staking/internal/chain"
 	"github.com/jhionan/multichain-staking/internal/chain/evm"
 	solanachain "github.com/jhionan/multichain-staking/internal/chain/solana"
 	"github.com/jhionan/multichain-staking/internal/config"
 	"github.com/jhionan/multichain-staking/internal/indexer"
+	"github.com/jhionan/multichain-staking/internal/security"
 	"github.com/jhionan/multichain-staking/internal/signer"
 	"github.com/jhionan/multichain-staking/internal/staking"
 	"github.com/jhionan/multichain-staking/pkg/middleware"
@@ -251,14 +253,38 @@ func main() {
 	}
 
 	// -------------------------------------------------------------------------
-	// 9. ConnectRPC handler and route registration.
+	// 9. Rate limiter (Valkey-backed, optional).
+	// -------------------------------------------------------------------------
+	var interceptors []connect.Interceptor
+	interceptors = append(interceptors, auth.AuthInterceptor(jwtSvc))
+
+	if cfg.ValkeyURL != "" {
+		rl, rlErr := security.NewRateLimiter(cfg.ValkeyURL, cfg.ValkeyPassword, 60, time.Minute)
+		if rlErr != nil {
+			log.Warn().Err(rlErr).Msg("rate limiter unavailable — skipping")
+		} else {
+			interceptors = append(interceptors, rl.Interceptor())
+			log.Info().Str("addr", cfg.ValkeyURL).Int("limit", 60).Msg("rate limiter enabled")
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// 10. Audit interceptor (PostgreSQL-backed).
+	// -------------------------------------------------------------------------
+	auditDB := audit.NewPGAuditDB(pool)
+	auditInterceptor := audit.NewAuditInterceptor(auditDB)
+	interceptors = append(interceptors, auditInterceptor.Interceptor())
+	log.Info().Msg("audit interceptor enabled")
+
+	// -------------------------------------------------------------------------
+	// 11. ConnectRPC handler and route registration.
 	// -------------------------------------------------------------------------
 	handler := api.NewHandler(stakingSvc)
 
 	mux := http.NewServeMux()
 	path, connectHandler := stakingv1connect.NewStakingServiceHandler(
 		handler,
-		connect.WithInterceptors(auth.AuthInterceptor(jwtSvc)),
+		connect.WithInterceptors(interceptors...),
 	)
 	mux.Handle(path, connectHandler)
 	log.Info().Str("path", path).Msg("ConnectRPC handler mounted")
