@@ -53,15 +53,24 @@ A production-grade proof-of-concept demonstrating cross-chain staking across **E
 
 ---
 
-## Live Testnet Deployment (Sepolia)
+## Live Testnet Deployments
 
-Contracts are deployed and verified on **Ethereum Sepolia** (chain ID `11155111`):
+### Ethereum Sepolia (Chain ID `11155111`)
 
 | Contract | Address | Explorer |
 |----------|---------|----------|
 | **StakingToken (LLSTK)** | `0xD8315d4a129d6dEb6A54D8C42445911AF3aD8F64` | [View on Etherscan](https://sepolia.etherscan.io/address/0xD8315d4a129d6dEb6A54D8C42445911AF3aD8F64) |
 | **TieredStaking** | `0x1D1Ca3770e7366EA6A5431a6185eD4952F570470` | [View on Etherscan](https://sepolia.etherscan.io/address/0x1D1Ca3770e7366EA6A5431a6185eD4952F570470) |
 | **Deployer** | `0x239f3d3F6FFBC5A01d1109d33BDdE0Bb12325FB7` | [View on Etherscan](https://sepolia.etherscan.io/address/0x239f3d3F6FFBC5A01d1109d33BDdE0Bb12325FB7) |
+
+### Solana Devnet
+
+| Component | Address | Explorer |
+|-----------|---------|----------|
+| **Tiered Staking Program** | `zaEDLTCw2b5zGrunQEDKvHuVEEgFoAwjHViMH357QGn` | [View on Solscan](https://solscan.io/account/zaEDLTCw2b5zGrunQEDKvHuVEEgFoAwjHViMH357QGn?cluster=devnet) |
+| **IDL Account** | `AERgQFi4B5wrgg2NbMQyS49TKtV3b53pJ96wECGBst3P` | [View on Solscan](https://solscan.io/account/AERgQFi4B5wrgg2NbMQyS49TKtV3b53pJ96wECGBst3P?cluster=devnet) |
+| **Deploy Signature** | `3b3iyyrDefPHx7Gv444QiYS3ybsxgzhSuzRp45zE5DkZYgFUToYqU9iSUwxhcXtXiUhucf9Kayk2cAxBNeNmCsow` | [View on Solscan](https://solscan.io/tx/3b3iyyrDefPHx7Gv444QiYS3ybsxgzhSuzRp45zE5DkZYgFUToYqU9iSUwxhcXtXiUhucf9Kayk2cAxBNeNmCsow?cluster=devnet) |
+| **Upgrade Authority** | `8ZAapig8xZLbTKDSi2ehMseu6eYcPqzZJX7BkFXKMfmK` | [View on Solscan](https://solscan.io/account/8ZAapig8xZLbTKDSi2ehMseu6eYcPqzZJX7BkFXKMfmK?cluster=devnet) |
 
 ### Sepolia E2E — Stake Transaction (verified on-chain)
 
