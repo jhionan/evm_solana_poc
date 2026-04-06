@@ -307,7 +307,7 @@ func (s *EVMStaker) GetPosition(ctx context.Context, positionID string) (chain.S
 	return chain.StakePosition{
 		ID:             positionID,
 		Chain:          chain.ChainEVM,
-		Wallet:         pos.Owner.Big(),
+		Wallet:         pos.Owner.Hex(),
 		Amount:         pos.Amount,
 		Tier:           uint8ToTier(pos.Tier),
 		Status:         status,

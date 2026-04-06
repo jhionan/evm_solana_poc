@@ -112,7 +112,7 @@ func TestService_GetTiers_UnknownChain_Errors(t *testing.T) {
 func TestService_Stake_ReturnsReceipt(t *testing.T) {
 	svc := newService()
 	req := chain.StakeRequest{
-		Wallet: big.NewInt(12345),
+		Wallet: "0x1234567890abcdef1234567890abcdef12345678",
 		Amount: big.NewInt(500),
 		Tier:   chain.TierSilver,
 	}

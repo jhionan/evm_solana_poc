@@ -22,6 +22,13 @@ func ClaimsFromContext(ctx context.Context) (Claims, bool) {
 	return c, ok
 }
 
+// ContextWithClaims returns a new context with the given Claims attached.
+// This is intended for use in tests and middleware that need to inject claims
+// without going through the full JWT verification flow.
+func ContextWithClaims(ctx context.Context, c Claims) context.Context {
+	return context.WithValue(ctx, claimsKey, c)
+}
+
 // AuthInterceptor returns a connect.UnaryInterceptorFunc that validates the
 // Bearer JWT on every request, except GetTiers which is public.
 // On success the verified Claims are stored in the request context.

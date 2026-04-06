@@ -41,7 +41,7 @@ type Tier struct {
 
 // StakeRequest is the input for a staking operation.
 type StakeRequest struct {
-	Wallet *big.Int // wallet identifier (address as numeric)
+	Wallet string
 	Amount *big.Int
 	Tier   TierType
 }
@@ -70,7 +70,7 @@ type ClaimReceipt struct {
 type StakePosition struct {
 	ID             string
 	Chain          ChainType
-	Wallet         *big.Int
+	Wallet         string
 	Amount         *big.Int
 	Tier           TierType
 	Status         PositionStatus

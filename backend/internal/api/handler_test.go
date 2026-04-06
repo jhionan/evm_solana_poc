@@ -75,7 +75,7 @@ func (m *mockStaker) GetPosition(_ context.Context, positionID string) (chain.St
 	return chain.StakePosition{
 		ID:             positionID,
 		Chain:          m.chainID,
-		Wallet:         big.NewInt(1),
+		Wallet:         "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
 		Amount:         big.NewInt(100),
 		Tier:           chain.TierBronze,
 		Status:         chain.StatusActive,

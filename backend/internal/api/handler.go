@@ -103,7 +103,7 @@ func toProtoPosition(p chain.StakePosition) *stakingv1.StakePosition {
 	return &stakingv1.StakePosition{
 		Id:             p.ID,
 		Chain:          toProtoChain(p.Chain),
-		Wallet:         bigIntStr(p.Wallet),
+		Wallet:         p.Wallet,
 		Amount:         bigIntStr(p.Amount),
 		Tier:           toProtoTier(p.Tier),
 		Status:         toProtoPositionStatus(p.Status),
@@ -155,9 +155,9 @@ func (h *Handler) Stake(
 		return nil, apperrors.ToConnectError(apperrors.ErrValidation.Wrap("amount is not a valid integer"))
 	}
 
-	wallet, ok := new(big.Int).SetString(req.Msg.GetWallet(), 10)
-	if !ok {
-		return nil, apperrors.ToConnectError(apperrors.ErrValidation.Wrap("wallet is not a valid integer"))
+	wallet := req.Msg.GetWallet()
+	if wallet == "" {
+		return nil, apperrors.ToConnectError(apperrors.ErrValidation.Wrap("wallet is required"))
 	}
 
 	domainReq := chain.StakeRequest{
