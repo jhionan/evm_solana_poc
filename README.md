@@ -36,7 +36,7 @@ A production-grade proof-of-concept demonstrating cross-chain staking across **E
               └──────────────────────────┬─────────────────────────────────┘
                                          │
                          ┌───────────────▼───────────────┐
-                         │       PostgreSQL 16            │
+                         │       PostgreSQL 18            │
                          │  stakes • events • snapshots   │
                          │  positions • audit_log         │
                          └───────────────────────────────┘
@@ -130,7 +130,7 @@ Opens `grpcui` in your browser — no client code required.
 | Backend | Go 1.23 | Business logic, indexer, adapters |
 | EVM contracts | Solidity 0.8 + Foundry | Staking vault, penalty ledger |
 | Solana program | Anchor / Rust | Native Solana staking program |
-| Database | PostgreSQL 16 | Canonical event store, position ledger |
+| Database | PostgreSQL 18 | Canonical event store, position ledger |
 | Cache / events | Valkey 8 | Pub/sub, idempotency keys, rate limits |
 | Migrations | Goose | Sequential, versioned schema changes |
 | SQL codegen | sqlc | Zero-reflection, compile-time DB access |

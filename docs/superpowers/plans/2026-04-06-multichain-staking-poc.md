@@ -6,7 +6,7 @@
 
 **Architecture:** Go backend exposes a ConnectRPC API. A `ChainStaker` interface abstracts chain interactions — `EVMStaker` and `SolanaStaker` implement it. An `EventIndexer` subscribes to on-chain events and persists them to PostgreSQL. The DB is treated as a cache of chain state, rebuildable from scratch via re-indexing.
 
-**Tech Stack:** Go 1.26, Solidity 0.8.28 (Foundry), Rust/Anchor (Solana), ConnectRPC + Buf, PostgreSQL 16 + sqlc + Goose, Valkey, zerolog, go-ethereum, solana-go, OpenZeppelin 5.x, testify
+**Tech Stack:** Go 1.26, Solidity 0.8.28 (Foundry), Rust/Anchor (Solana), ConnectRPC + Buf, PostgreSQL 18 + sqlc + Goose, Valkey, zerolog, go-ethereum, solana-go, OpenZeppelin 5.x, testify
 
 **Spec:** `docs/superpowers/specs/2026-04-06-multichain-staking-poc-design.md`
 **Decision Docs:** `../etherium_poc_docs/` (ADR format per phase)
@@ -222,7 +222,7 @@ git commit -m "feat: initialize project scaffold with Go module"
 ```yaml
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     ports:
       - "5432:5432"
     environment:
@@ -5297,7 +5297,7 @@ make demo
 | EVM Contracts | Solidity 0.8.28, Foundry, OpenZeppelin 5.x |
 | Solana Program | Rust, Anchor 0.30+ |
 | Backend | Go 1.26, ConnectRPC, Buf |
-| Database | PostgreSQL 16, sqlc, Goose |
+| Database | PostgreSQL 18, sqlc, Goose |
 | Cache | Valkey 8 |
 | Auth | JWT (HS256) |
 
